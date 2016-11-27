@@ -29,6 +29,7 @@ class UnpackerSpec extends Specification {
 
         where:
         buffer                                                                                  | message
+        // JL need samples for "fix" msgpack stuff.
         gen { x -> x.put(20 as byte) }                                                          | "onByte|20"
         gen { x -> x.put(0xc0 as byte) }                                                        | "onNull"
         gen { x -> x.put(0xc2 as byte) }                                                        | "onBoolean|false"

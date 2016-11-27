@@ -8,8 +8,4 @@ public class UnsupportedWireFormatException extends RuntimeException {
     public UnsupportedWireFormatException(byte value) {
         super("unrecognised wire format - value = " + value);
     }
-
-    public UnsupportedWireFormatException(WireFormat wireFormat) {
-        super("wire format " + wireFormat + " is not supported");
-    }
 }
