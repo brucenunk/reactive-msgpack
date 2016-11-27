@@ -7,24 +7,36 @@ import java.util.function.Consumer
  * @since 1.0
  */
 class DebugElementParserFactory implements ElementParserFactory<String> {
+    boolean routeNullsViaOnString
+
+    DebugElementParserFactory() {
+        this(false)
+    }
+
+    DebugElementParserFactory(boolean routeNullsViaOnString) {
+        this.routeNullsViaOnString = routeNullsViaOnString
+    }
+
     @Override
     ElementParser<String> firstElementParser(Consumer<String> consumer) {
-        return new DebugElementParser(consumer)
+        return new DebugElementParser(consumer, routeNullsViaOnString)
     }
 
     /**
      *
      */
     static class DebugElementParser implements ElementParser<String> {
-        Consumer<String> downstream
+        Consumer<String> consumer
+        boolean routeNullsViaOnString
 
-        DebugElementParser(Consumer<String> downstream) {
-            this.downstream = downstream
+        DebugElementParser(Consumer<String> consumer, boolean routeNullsViaOnString) {
+            this.consumer = consumer
+            this.routeNullsViaOnString = routeNullsViaOnString
         }
 
         @Override
         boolean isRoutingNullsViaOnStringEnabled() {
-            false
+            routeNullsViaOnString
         }
 
         @Override
@@ -84,7 +96,7 @@ class DebugElementParserFactory implements ElementParserFactory<String> {
         }
 
         ElementParser<String> dispatchEvent(String s) {
-            downstream.accept(s)
+            consumer.accept(s)
             this
         }
     }

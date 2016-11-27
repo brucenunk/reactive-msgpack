@@ -111,14 +111,27 @@ onLong|200""".toString()
         m == message
     }
 
+    def "allow ElementParser to control routing of null values"() {
+        def buffer = gen { x -> x.put(0xc0 as byte) }
+        ElementParserFactory<String> elementParserFactory = new DebugElementParserFactory(true)
+
+        when:
+        def s = unpack(elementParserFactory, buffer).collect(Collectors.joining()).block()
+
+        then:
+        s == "onString|null"
+    }
+
     /**
      * Generates a {@link ByteBuffer} and applies {@code mapper} to it.
      *
      * @param mapper
      * @return
      */
-    def gen(Function<ByteBuffer, ByteBuffer> mapper) {
-        mapper.andThen { x -> x.flip() }.apply(ByteBuffer.allocate(200))
+    ByteBuffer gen(Function<ByteBuffer, ByteBuffer> mapper) {
+        def buffer = ByteBuffer.allocate(200)
+        mapper.andThen { x -> x.flip() }.apply(buffer)
+        return buffer
     }
 
     /**
@@ -143,7 +156,7 @@ onLong|200""".toString()
         }
 
         log.debug("random split generated {} buffer(s)", result.size())
-        result
+        return result
     }
 
     /**
