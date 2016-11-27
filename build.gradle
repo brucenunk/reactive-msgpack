@@ -1,0 +1,29 @@
+group 'jamesl'
+version '1.0.0-SNAPSHOT'
+
+apply plugin: 'groovy'
+apply plugin: 'java'
+apply plugin: 'maven'
+
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+    mavenLocal()
+}
+
+dependencies {
+    compile "io.projectreactor:reactor-core:3.0.3.RELEASE"
+    compile 'org.reactivestreams:reactive-streams:1.0.0'
+    compile 'org.slf4j:slf4j-api:1.7.21'
+    testCompile 'io.netty:netty-buffer:4.1.6.Final'
+    testCompile 'org.apache.logging.log4j:log4j-api:2.6.2'
+    testCompile 'org.apache.logging.log4j:log4j-core:2.6.2'
+    testCompile 'org.apache.logging.log4j:log4j-slf4j-impl:2.6.2'
+    testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.2'
+}
+
